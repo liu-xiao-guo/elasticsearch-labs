@@ -10,6 +10,7 @@ ELASTIC_API_KEY = os.getenv("ELASTIC_API_KEY")
 if ELASTICSEARCH_URL:
     elasticsearch_client = Elasticsearch(
         hosts=[ELASTICSEARCH_URL],
+        verify_certs = False
     )
 elif ELASTIC_CLOUD_ID:
     elasticsearch_client = Elasticsearch(
