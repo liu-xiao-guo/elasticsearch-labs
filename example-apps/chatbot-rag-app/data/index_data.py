@@ -18,9 +18,13 @@ ELASTICSEARCH_URL = os.getenv("ELASTICSEARCH_URL")
 ELASTIC_API_KEY = os.getenv("ELASTIC_API_KEY")
 ELSER_MODEL = os.getenv("ELSER_MODEL", ".elser_model_2")
 
+ELASTCSEARCH_CERT_PATH = "/usr/share/certs/http_ca.crt"
+
 if ELASTICSEARCH_URL:
     elasticsearch_client = Elasticsearch(
-        hosts=[ELASTICSEARCH_URL],
+        hosts=[ELASTICSEARCH_URL], 
+        ca_certs = ELASTCSEARCH_CERT_PATH, 
+        verify_certs = True
     )
 elif ELASTIC_CLOUD_ID:
     elasticsearch_client = Elasticsearch(
