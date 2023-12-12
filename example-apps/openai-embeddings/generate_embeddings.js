@@ -81,12 +81,13 @@ async function generateEmbeddingsWithOpenAI(docs) {
     `Calling OpenAI API for ${input.length} embeddings with model ${MODEL}`
   );
 
-  result = await openaiClient.createEmbedding({
+  result = await openaiClient.embeddings.create({
     model: MODEL,
     input,
   });
 
-  return result.data.data.map((data) => data["embedding"]);
+  return result.data.map((data) => data["embedding"])
+  // return result.data.data.map((data) => data["embedding"]);
 }
 
 async function processFile() {
@@ -106,6 +107,7 @@ async function processFile() {
     console.log(`Processing batch of ${docsBatch.length} documents...`);
 
     // Generate embeddings and add them to the documents
+    console.log("docsBatch size: " + docsBatch.length)
     const embeddings = await generateEmbeddingsWithOpenAI(docsBatch);
     docsBatch.forEach((doc, i) => (doc.embedding = embeddings[i]));
 

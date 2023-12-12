@@ -17,12 +17,13 @@ async function generateEmbeddingsWithOpenAI(text) {
     `Calling OpenAI API to apply embedding on text "${text}" with model ${MODEL}`
   );
 
-  const result = await openaiClient.createEmbedding({
+  const result = await openaiClient.embeddings.create({
     model: MODEL,
     input: text,
   });
 
-  return result.data.data[0].embedding;
+  // return result.data.data[0].embedding;
+  return result.data[0].embedding;
 }
 
 async function runSemanticSearch(query) {
