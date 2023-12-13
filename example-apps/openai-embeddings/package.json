@@ -11,7 +11,6 @@
   "license": "MIT",
   "dependencies": {
     "@elastic/elasticsearch": "^8.8.0",
-    "elasticsearch": "^16.7.3",
     "express": "^4.18.2",
     "hbs": "^4.2.0",
     "openai": "^4.20.1"
