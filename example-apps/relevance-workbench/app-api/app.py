@@ -7,6 +7,8 @@ ES_USER = os.environ['ELASTICSEARCH_USERNAME']
 ES_PASSWORD = os.environ['ELASTICSEARCH_PASSWORD']
 ES_URL = os.environ['ELASTICSEARCH_URL']
 
+model_id = ".elser_model_2"
+
 ELASTCSEARCH_CERT_PATH = "/usr/share/certs/http_ca.crt"
 
 datasets = {
@@ -77,7 +79,7 @@ def get_text_expansion_request_body(query, size = 10, **options):
         te = {"text_expansion": {}}
         te['text_expansion'][field] = {
             "model_text": query,
-            "model_id": ".elser_model_1",
+            "model_id": model_id,
             "boost": boost
           }
         text_expansions.append(te)
@@ -110,7 +112,7 @@ def get_text_expansion_request_body(query, size = 10, **options):
         te = {"text_expansion": {}}
         te['text_expansion'][field] = {
             "model_text": query,
-            "model_id": ".elser_model_1",
+            "model_id": model_id,
             "boost": boost
           }
         text_expansions.append(te)
@@ -162,7 +164,7 @@ def get_hybrid_search_rrf_request_body(query, size = 10, **options):
         te = {"text_expansion": {}}
         te['text_expansion'][field] = {
             "model_text": query,
-            "model_id": ".elser_model_1",
+            "model_id": model_id,
             "boost": boost
           }
         text_expansions.append(te)
@@ -202,7 +204,7 @@ def execute_search_request(index, body):
     if ES_URL : 
         es = Elasticsearch(
             hosts=[ES_URL], 
-            basic_auth=(ES_USER,ES_PASSWORD)
+            basic_auth=(ES_USER,ES_PASSWORD),
             ca_certs = ELASTCSEARCH_CERT_PATH, 
             verify_certs = True
         )
@@ -224,7 +226,7 @@ def execute_search_request_using_raw_dsl(index, body):
     if ES_URL : 
         es = Elasticsearch(
             hosts=[ES_URL], 
-            basic_auth=(ES_USER,ES_PASSWORD)
+            basic_auth=(ES_USER,ES_PASSWORD),
             ca_certs = ELASTCSEARCH_CERT_PATH, 
             verify_certs = True
         )
