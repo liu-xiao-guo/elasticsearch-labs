@@ -5,6 +5,9 @@ from elasticsearch import Elasticsearch
 CLOUD_ID = os.environ["CLOUD_ID"]
 ES_USER = os.environ['ELASTICSEARCH_USERNAME']
 ES_PASSWORD = os.environ['ELASTICSEARCH_PASSWORD']
+ES_URL = os.environ['ELASTICSEARCH_URL']
+
+ELASTCSEARCH_CERT_PATH = "/usr/share/certs/http_ca.crt"
 
 datasets = {
     "movies": {
@@ -196,10 +199,19 @@ def execute_search_request(index, body):
     """
     Executes an ES search request and returns the JSON response.
     """
-    es = Elasticsearch(
-        cloud_id=CLOUD_ID,
-        basic_auth=(ES_USER,ES_PASSWORD)
-    )
+    if ES_URL : 
+        es = Elasticsearch(
+            hosts=[ES_URL], 
+            basic_auth=(ES_USER,ES_PASSWORD)
+            ca_certs = ELASTCSEARCH_CERT_PATH, 
+            verify_certs = True
+        )
+    else: 
+        es = Elasticsearch(
+            cloud_id=CLOUD_ID,
+            basic_auth=(ES_USER,ES_PASSWORD)
+        )
+                
     response = es.search(index=index,query=body["query"], fields=body["fields"], size=body["size"], source=body["_source"])
 
     return response
@@ -209,10 +221,19 @@ def execute_search_request_using_raw_dsl(index, body):
     Executes an ES search request using the request library and returns the JSON response.
     """
 
-    es = Elasticsearch(
-        cloud_id=CLOUD_ID,
-        basic_auth=(ES_USER,ES_PASSWORD)
-    )
+    if ES_URL : 
+        es = Elasticsearch(
+            hosts=[ES_URL], 
+            basic_auth=(ES_USER,ES_PASSWORD)
+            ca_certs = ELASTCSEARCH_CERT_PATH, 
+            verify_certs = True
+        )
+    else: 
+        es = Elasticsearch(
+            cloud_id=CLOUD_ID,
+            basic_auth=(ES_USER,ES_PASSWORD)
+        )
+        
     response = es.perform_request("POST", f"/{index}/_search", headers={"content-type": "application/json", "accept": "application/json"}, body=body)
 
     return response

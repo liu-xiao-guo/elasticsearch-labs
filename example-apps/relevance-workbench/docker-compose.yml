@@ -7,12 +7,14 @@ services:
       dockerfile: Dockerfile
     volumes:
       - './app-api:/usr/src/app'
+      - './http_ca.crt:/usr/share/certs/http_ca.crt:ro'
     ports:
       - 8000:8000
     environment:
       - CLOUD_ID=<cloud_id>
       - ELASTICSEARCH_USERNAME=elastic
-      - ELASTICSEARCH_PASSWORD=<elastic pass>
+      - ELASTICSEARCH_PASSWORD=o6G_pvRL=8P*7on+o6XH
+      - ELASTICSEARCH_URL=https://192.168.0.3:9200
 
   client:
     build:

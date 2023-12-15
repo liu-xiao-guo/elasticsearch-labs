@@ -11,7 +11,8 @@ parser.add_argument('--data_folder', dest='data_folder',
 parser.add_argument('--es_user', dest='es_user',
                     required=False, default='elastic')
 parser.add_argument('--es_password', dest='es_password', required=True)
-parser.add_argument('--cloud_id', dest='cloud_id', required=True)
+parser.add_argument('--es_url', dest='es_url', required=True)
+parser.add_argument('--cloud_id', dest='cloud_id', required=False)
 parser.add_argument('--index_name', dest='index_name', required=False, default='search-movies')
 parser.add_argument('--gzip_file', dest='gzip_file', required=False, default='movies-sample.json.gz')
 
@@ -27,11 +28,22 @@ def data_generator(file_json, index, pipeline):
         }
 
 print("Init Elasticsearch client")
-es = Elasticsearch(
-    cloud_id=args.cloud_id,
-    basic_auth=(args.es_user, args.es_password),
-    request_timeout=600
-)
+
+if args.es_url : 
+    es = Elasticsearch(
+        args.es_url,
+        ca_certs = "./http_ca.crt",
+        basic_auth=(args.es_user, args.es_password),
+        request_timeout=600
+    )
+else:
+    es = Elasticsearch(
+        cloud_id=args.cloud_id,
+        basic_auth=(args.es_user, args.es_password),
+        request_timeout=600
+    )    
+    
+print(es.info())
 
 print("Indexing movies data, this might take a while...")
 file = gzip.open(args.gzip_file, 'r')
