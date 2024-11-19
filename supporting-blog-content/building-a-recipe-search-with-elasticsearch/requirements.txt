@@ -2,3 +2,4 @@ elasticsearch
 aiohttp
 pyyaml
 pandas
+load_dotenv
