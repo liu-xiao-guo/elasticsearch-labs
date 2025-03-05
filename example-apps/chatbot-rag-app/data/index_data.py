@@ -23,7 +23,7 @@ ELASTCSEARCH_CERT_PATH = "/usr/share/certs/http_ca.crt"
 if ELASTICSEARCH_URL:
     elasticsearch_client = Elasticsearch(
         hosts=[ELASTICSEARCH_URL], 
-        ca_certs = ELASTCSEARCH_CERT_PATH, 
+        ca_certs = "./http_ca.crt", 
         verify_certs = True
     )
 elif ELASTIC_CLOUD_ID:
